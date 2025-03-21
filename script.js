@@ -1,7 +1,5 @@
-// script.js
 document.addEventListener('DOMContentLoaded', function() {
-
-    // --- Smooth Scroll (from previous example - keep this) ---
+    // --- Smooth Scroll ---
     const topButton = document.createElement('a');
     topButton.href = '#top';
     topButton.textContent = 'Back to Top';
@@ -15,9 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     topButton.style.textDecoration = 'none';
     topButton.style.borderRadius = '5px';
     topButton.style.zIndex = '1000';
-
     document.body.appendChild(topButton);
-
+    
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 200) {
             topButton.style.display = 'block';
@@ -25,24 +22,21 @@ document.addEventListener('DOMContentLoaded', function() {
             topButton.style.display = 'none';
         }
     });
-
+    
     topButton.addEventListener('click', function(event) {
         event.preventDefault();
         scrollToTop(500);
     });
-
+    
     function scrollToTop(duration) {
         const startingY = window.pageYOffset;
         const diff = -startingY;
         let start;
-
         window.requestAnimationFrame(function step(timestamp) {
             if (!start) start = timestamp;
             const time = timestamp - start;
             const percent = Math.min(time / duration, 1);
-
             window.scrollTo(0, startingY + diff * percent);
-
             if (time < duration) {
                 window.requestAnimationFrame(step);
             }
@@ -50,52 +44,69 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // --- End Smooth Scroll ---
 
-
-
     // --- Fetch GitHub Repositories ---
     const repoContainer = document.getElementById('repo-container');
-    const githubUsername = 'tahaspc82442'; // REPLACE WITH YOUR GITHUB USERNAME
+    if (!repoContainer) {
+        console.error('Could not find element with ID "repo-container"');
+        return;
+    }
 
-    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=6`) // Fetch repos, sorted by updated date, limit to 6
+    const githubUsername = 'tahaspc82442';
+    console.log('Fetching repositories for:', githubUsername);
+
+    fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=10`)
         .then(response => {
+            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status}`);
             }
             return response.json();
         })
         .then(repos => {
+            console.log('Repositories fetched:', repos.length);
+            if (repos.length === 0) {
+                repoContainer.innerHTML = '<p>No repositories found.</p>';
+                return;
+            }
+            
+            // Clear any existing content
+            repoContainer.innerHTML = '';
+            
             repos.forEach(repo => {
+                console.log('Processing repo:', repo.name);
                 // Create elements for each repository
                 const repoItem = document.createElement('div');
                 repoItem.classList.add('repo-item');
-
+                
+                const repoTitle = document.createElement('h3');
+                
                 const repoLink = document.createElement('a');
                 repoLink.href = repo.html_url;
                 repoLink.textContent = repo.name;
                 repoLink.target = '_blank';
                 repoLink.rel = 'noopener noreferrer';
-
-                const repoTitle = document.createElement('h3');
+                
                 repoTitle.appendChild(repoLink);
-
+                
                 const repoDescription = document.createElement('p');
-                repoDescription.textContent = repo.description || 'No description provided.'; // Handle missing descriptions
-
+                repoDescription.textContent = repo.description || 'No description provided.';
+                
                 const repoLanguage = document.createElement('p');
-                repoLanguage.classList.add('tech-stack'); // Use the existing tech-stack class
-                repoLanguage.textContent = repo.language || 'Unknown'; // Display the primary language
-
+                repoLanguage.classList.add('tech-stack');
+                repoLanguage.textContent = `Language: ${repo.language || 'Unknown'}`;
+                
                 // Add elements to the repo item
                 repoItem.appendChild(repoTitle);
                 repoItem.appendChild(repoDescription);
                 repoItem.appendChild(repoLanguage);
-
+                
                 // Add the repo item to the container
                 repoContainer.appendChild(repoItem);
             });
         })
         .catch(error => {
             console.error('Error fetching repositories:', error);
-            repoContainer.textContent = 'Failed to load repositories.  Please check your GitHub username and network connection.';
+            repoContainer.innerHTML = `<p>Failed to load repositories: ${error.message}</p>`;
         });
+    // --- End Fetch GitHub Repositories ---
 });
