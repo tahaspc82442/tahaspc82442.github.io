@@ -1,0 +1,179 @@
+/* style.css */
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Or your preferred font */
+    line-height: 1.6;
+    background-color: #121212; /* Dark background */
+    color: #eee; /* Light text */
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+}
+
+.subtitle {
+    font-size: 1.5em;
+    color: #aaa; /* Slightly muted color */
+    margin-bottom: 1em;
+}
+
+nav {
+    margin-top: 20px;
+    display: flex; /* Use flexbox for navigation */
+    justify-content: center; /* Center the links */
+    gap: 20px; /* Space between links */
+}
+
+nav a {
+    color: #4CAF50; /* Example accent color (green) */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+    padding: 8px 12px;  /* Add some padding */
+    border-radius: 4px; /* Slightly rounded corners */
+    border: 1px solid transparent; /* Add a transparent border for hover effect */
+}
+
+nav a:hover {
+    color: #fff; /* Brighter color on hover */
+    border-color: #4CAF50; /* Show border on hover */
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    border-bottom: 2px solid #4CAF50; /* Subtle bottom border */
+    padding-bottom: 0.5em;
+}
+
+.skills-container {
+    display: flex;
+    justify-content: space-around; /* Distribute skills evenly */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.skills-container > div {
+    flex: 1;
+    min-width: 250px; /* Minimum width for each skill group*/
+    margin: 10px;
+}
+
+ul {
+    list-style: none; /* Remove bullet points */
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+.experience-item {
+    margin-bottom: 20px;
+}
+
+.experience-item h3 {
+    font-size: 1.3em;
+    margin-bottom: 0.3em;
+}
+
+.company {
+    font-style: italic;
+    color: #aaa;
+    margin-bottom: 0.5em;
+}
+
+/* Styles for the dynamically generated repository items */
+.repo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+.repo-item {
+    border: 1px solid #333; /* Subtle border */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth scaling and shadow on hover */
+    background-color: #1e1e1e; /* Slightly lighter background */
+    /* Add box-shadow for a subtle depth effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.repo-item:hover {
+    transform: scale(1.03); /* Slightly enlarge on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+}
+
+.repo-item h3 {
+    font-size: 1.1em;
+    margin-bottom: 0.5em; /* Add space between title and description */
+}
+
+.repo-item h3 a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.repo-item h3 a:hover {
+    text-decoration: underline; /* Underline links on hover within the repo item */
+}
+
+.repo-item p {
+    margin-bottom: 0.5em;  /*Consistent Spacing*/
+}
+
+.tech-stack {
+    color: #aaa;
+    font-style: italic;
+}
+#contact nav{
+    justify-content: center;
+
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    color: #aaa;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .subtitle {
+        font-size: 1.2em;
+    }
+
+    .skills-container {
+        flex-direction: column; /* Stack skill groups vertically */
+    }
+    .skills-container > div {
+        margin: 10px 0; /* Adjust margins for vertical stacking */
+    }
+
+    .repo-grid {
+        grid-template-columns: 1fr; /* Single column layout on small screens */
+    }
+}
