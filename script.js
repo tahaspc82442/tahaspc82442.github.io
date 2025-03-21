@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // --- Smooth Scroll ---
     const topButton = document.createElement('a');
     topButton.href = '#top';
@@ -14,20 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
     topButton.style.borderRadius = '5px';
     topButton.style.zIndex = '1000';
     document.body.appendChild(topButton);
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         if (window.pageYOffset > 200) {
             topButton.style.display = 'block';
         } else {
             topButton.style.display = 'none';
         }
     });
-    
-    topButton.addEventListener('click', function(event) {
+
+    topButton.addEventListener('click', function (event) {
         event.preventDefault();
         scrollToTop(500);
     });
-    
+
     function scrollToTop(duration) {
         const startingY = window.pageYOffset;
         const diff = -startingY;
@@ -51,14 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    const githubUsername = 'tahaspc82442';
+    const githubUsername = 'tahaspc82442'; //  Make sure this is correct!
     console.log('Fetching repositories for:', githubUsername);
 
     fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=10`)
         .then(response => {
-            console.log('Response status:', response.status);
             if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status}`);
+                return Promise.reject(`HTTP error! status: ${response.status}`);  // Use reject
             }
             return response.json();
         })
@@ -68,45 +67,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 repoContainer.innerHTML = '<p>No repositories found.</p>';
                 return;
             }
-            
-            // Clear any existing content
-            repoContainer.innerHTML = '';
-            
+
+            repoContainer.innerHTML = ''; // Clear existing content
+
             repos.forEach(repo => {
                 console.log('Processing repo:', repo.name);
-                // Create elements for each repository
+
                 const repoItem = document.createElement('div');
                 repoItem.classList.add('repo-item');
-                
+
                 const repoTitle = document.createElement('h3');
-                
                 const repoLink = document.createElement('a');
                 repoLink.href = repo.html_url;
                 repoLink.textContent = repo.name;
                 repoLink.target = '_blank';
-                repoLink.rel = 'noopener noreferrer';
-                
+                repoLink.rel = 'noopener noreferrer';  // Security best practice
                 repoTitle.appendChild(repoLink);
-                
+
                 const repoDescription = document.createElement('p');
                 repoDescription.textContent = repo.description || 'No description provided.';
-                
+
                 const repoLanguage = document.createElement('p');
                 repoLanguage.classList.add('tech-stack');
                 repoLanguage.textContent = `Language: ${repo.language || 'Unknown'}`;
-                
-                // Add elements to the repo item
+
                 repoItem.appendChild(repoTitle);
                 repoItem.appendChild(repoDescription);
                 repoItem.appendChild(repoLanguage);
-                
-                // Add the repo item to the container
+
                 repoContainer.appendChild(repoItem);
             });
         })
         .catch(error => {
             console.error('Error fetching repositories:', error);
-            repoContainer.innerHTML = `<p>Failed to load repositories: ${error.message}</p>`;
+            repoContainer.innerHTML = `<p>Failed to load repositories: ${error}</p>`; // Simpler error display
         });
     // --- End Fetch GitHub Repositories ---
 });
